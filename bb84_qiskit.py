@@ -64,7 +64,7 @@ def sample_and_verify(a_sift: np.ndarray, b_sift: np.ndarray, s: int, rng: np.ra
     mism = int(np.sum(a_sift[sample_idx] != b_sift[sample_idx]))
     qber = mism / s
     mask = np.ones(len(a_sift), dtype=bool); mask[sample_idx] = False
-    kept_a = a_sift[mask]; kept_b = b_sift[mask]
+    kept_b = b_sift[mask]
     if qber > qber_threshold:
         raise ValueError(f"QBER too high in sample: {qber:.3f} > {qber_threshold:.3f}")
     kept_indices = np.nonzero(mask)[0].tolist()
