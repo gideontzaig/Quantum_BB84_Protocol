@@ -15,7 +15,7 @@ def create_random_generator(seed: Optional[int] = None) -> np.random.Generator:
 def create_random_bits(rng: np.random.Generator, m: int) -> np.ndarray:
     return rng.integers(0, 2, size=m, dtype=np.int8)
 
-# Generates a random array of m bases (0 for Z, 1 for X).
+# Generates a random array of m bases.
 def create_random_bases(rng: np.random.Generator, m: int) -> np.ndarray:
     return rng.integers(0, 2, size=m, dtype=np.int8)
 
