@@ -65,15 +65,15 @@ def sift(alice_bits: np.ndarray, alice_bases: np.ndarray,
 
 # Samples a subset of sifted bits to verify the Quantum Bit Error Rate (QBER).
 # Returns a tuple containing (kept_bits, qber_value, sample_indices, kept_indices)
-def sample_and_verify(a_sift: np.ndarray, b_sift: np.ndarray, s: int, rng: np.random.Generator,
+def sample_and_verify(alice_sift: np.ndarray, bob_sift: np.ndarray, s: int, rng: np.random.Generator,
                       qber_threshold: float = 0.02):
-    if len(a_sift) < s:
-        raise ValueError(f"Not enough sifted bits to sample: have {len(a_sift)}, need s={s}")
-    sample_idx = rng.choice(len(a_sift), size=s, replace=False)
-    mism = int(np.sum(a_sift[sample_idx] != b_sift[sample_idx]))
+    if len(alice_sift) < s:
+        raise ValueError(f"Not enough sifted bits to sample: have {len(alice_sift)}, need s={s}")
+    sample_idx = rng.choice(len(alice_sift), size=s, replace=False)
+    mism = int(np.sum(alice_sift[sample_idx] != bob_sift[sample_idx]))
     qber = mism / s
-    mask = np.ones(len(a_sift), dtype=bool); mask[sample_idx] = False
-    kept_b = b_sift[mask]
+    mask = np.ones(len(alice_sift), dtype=bool); mask[sample_idx] = False
+    kept_b = bob_sift[mask]
     if qber > qber_threshold:
         raise ValueError(f"QBER too high in sample: {qber:.3f} > {qber_threshold:.3f}")
     kept_indices = np.nonzero(mask)[0].tolist()
@@ -128,7 +128,7 @@ def BB84(n: int, s: int, *, seed: Optional[int] = None, batch_size: int = 1024,
     if n <= 0 or s < 0:
         raise ValueError("n must be >0 and s >=0")
     random_generator = create_random_generator(seed)
-    a_sift_all, b_sift_all = [], []
+    alice_sift_all, bob_sift_all = [], []
     raw_total = 0
     while True:
         m = batch_size
@@ -145,11 +145,11 @@ def BB84(n: int, s: int, *, seed: Optional[int] = None, batch_size: int = 1024,
         raw_total += m
         alice_sift, bob_sift, _ = sift(alice_bits, alice_bases, bob_bases, bob_bits)
         if len(alice_sift):
-            a_sift_all.append(alice_sift); b_sift_all.append(bob_sift)
-        if sum(len(x) for x in a_sift_all) >= n + s:
+            alice_sift_all.append(alice_sift); bob_sift_all.append(bob_sift)
+        if sum(len(x) for x in alice_sift_all) >= n + s:
             break
-    alice_sift_cat = np.concatenate(a_sift_all) if a_sift_all else np.array([], dtype=np.int8)
-    bob_sift_cat = np.concatenate(b_sift_all) if b_sift_all else np.array([], dtype=np.int8)
+    alice_sift_cat = np.concatenate(alice_sift_all) if alice_sift_all else np.array([], dtype=np.int8)
+    bob_sift_cat = np.concatenate(bob_sift_all) if bob_sift_all else np.array([], dtype=np.int8)
     kept_bits, qber, sample_idx, kept_idx = sample_and_verify(alice_sift_cat, bob_sift_cat, s, random_generator, qber_threshold=qber_threshold)
     if len(kept_bits) < n:
         raise RuntimeError(f"After sampling, not enough bits remain: have {len(kept_bits)}, need {n}")
