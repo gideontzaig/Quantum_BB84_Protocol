@@ -137,4 +137,4 @@ BB84(
 
 ## License
 
-MIT (or your choice).
+MIT License.
