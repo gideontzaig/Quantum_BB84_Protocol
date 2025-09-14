@@ -15,13 +15,14 @@ def create_random_generator(seed: Optional[int] = None) -> np.random.Generator:
 def create_random_bits(rng: np.random.Generator, m: int) -> np.ndarray:
     return rng.integers(0, 2, size=m, dtype=np.int8)
 
-# Generates a random array of m bases.
+# Generates a random array of m bases. (0 for Z, 1 for X).
 def create_random_bases(rng: np.random.Generator, m: int) -> np.ndarray:
     return rng.integers(0, 2, size=m, dtype=np.int8)
 
 # Constructs a quantum circuit for a single BB84 transmission.
 def one_qubit_bb84_circuit(bit: int, alice_basis: int, bob_basis: int) -> QuantumCircuit:
     qc = QuantumCircuit(1, 1)
+    # Alice prep
     if alice_basis == 0:
         if bit == 1:
             qc.x(0)
@@ -29,6 +30,7 @@ def one_qubit_bb84_circuit(bit: int, alice_basis: int, bob_basis: int) -> Quantu
         qc.h(0)
         if bit == 1:
             qc.z(0)
+    # Bob measurement
     if bob_basis == 1:
         qc.h(0)
     qc.measure(0, 0)
@@ -65,19 +67,18 @@ def sift(alice_bits: np.ndarray, alice_bases: np.ndarray,
 
 # Samples a subset of sifted bits to verify the Quantum Bit Error Rate (QBER).
 # Returns a tuple containing (kept_bits, qber_value, sample_indices, kept_indices)
-def sample_and_verify(alice_sift: np.ndarray, bob_sift: np.ndarray, s: int, rng: np.random.Generator,
-                      qber_threshold: float = 0.02):
-    if len(alice_sift) < s:
-        raise ValueError(f"Not enough sifted bits to sample: have {len(alice_sift)}, need s={s}")
-    sample_idx = rng.choice(len(alice_sift), size=s, replace=False)
-    mism = int(np.sum(alice_sift[sample_idx] != bob_sift[sample_idx]))
-    qber = mism / s
-    mask = np.ones(len(alice_sift), dtype=bool); mask[sample_idx] = False
+def sample_and_verify(alice_sift: np.ndarray, bob_sift: np.ndarray, sample_size: int, rng: np.random.Generator, qber_threshold: float = 0.02):
+    if len(alice_sift) < sample_size:
+        raise ValueError(f"Not enough sifted bits to sample: have {len(alice_sift)}, need s={sample_size}")
+    sample_index = rng.choice(len(alice_sift), size=sample_size, replace=False)
+    mismatched_bits = int(np.sum(alice_sift[sample_index] != bob_sift[sample_index]))
+    error_rate = mismatched_bits / sample_size
+    mask = np.ones(len(alice_sift), dtype=bool); mask[sample_index] = False
     kept_b = bob_sift[mask]
-    if qber > qber_threshold:
-        raise ValueError(f"QBER too high in sample: {qber:.3f} > {qber_threshold:.3f}")
+    if error_rate > qber_threshold:
+        raise ValueError(f"QBER too high in sample: {error_rate:.3f} > {qber_threshold:.3f}")
     kept_indices = np.nonzero(mask)[0].tolist()
-    return kept_b.astype(int).tolist(), qber, sample_idx.tolist(), kept_indices
+    return kept_b.astype(int).tolist(), error_rate, sample_index.tolist(), kept_indices
 
 # Picks the best available IBM backend based on pending jobs.
 def pick_ibm_backend(service, backend_name=None):
@@ -135,11 +136,11 @@ def BB84(n: int, s: int, *, seed: Optional[int] = None, batch_size: int = 1024,
         alice_bits  = create_random_bits(random_generator, m)
         alice_bases = create_random_bases(random_generator, m)
         bob_bases = create_random_bases(random_generator, m)
-        circs = [one_qubit_bb84_circuit(int(alice_bits[i]), int(alice_bases[i]), int(bob_bases[i])) for i in range(m)]
+        circuits = [one_qubit_bb84_circuit(int(alice_bits[i]), int(alice_bases[i]), int(bob_bases[i])) for i in range(m)]
         if executor.lower() == "aer":
-            bob_bits = np.array(run_single_shot_batch(circs), dtype=np.int8)
+            bob_bits = np.array(run_single_shot_batch(circuits), dtype=np.int8)
         elif executor.lower() == "runtime":
-            bob_bits = np.array(run_single_shot_batch_runtime(circs, runtime_service=runtime_service, backend_name=backend_name, shots=1), dtype=np.int8)
+            bob_bits = np.array(run_single_shot_batch_runtime(circuits, runtime_service=runtime_service, backend_name=backend_name, shots=1), dtype=np.int8)
         else:
             raise ValueError("executor must be 'aer' or 'runtime'")
         raw_total += m
