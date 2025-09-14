@@ -3,14 +3,14 @@
 This repo provides a clean, beginner-friendly implementation of the **BB84 quantum key distribution** protocol using **Qiskit**.
 
 - Run **offline** with the local **Aer** simulator.
-- Optionally run the **same code online** on IBM Quantum (hardware or eligible simulators) via **Qiskit Runtime**—just flip a flag.
+- Optionally run the **same code online** on IBM Quantum (hardware or eligible simulators) via **Qiskit Runtime** - just flip a flag.
 
 ---
 
 ## What’s inside
 
-- `BB84_Qiskit_Aer_Notebook.ipynb` — a Jupyter notebook that explains and runs the BB84 pipeline step-by-step.  
-- `bb84_qiskit.py` — the same implementation packaged as a Python module.
+- `BB84_Qiskit_Aer_Notebook.ipynb` - a Jupyter notebook that explains and runs the BB84 pipeline step-by-step.  
+- `bb84_qiskit.py` - the same implementation packaged as a Python module.
 
 Both expose a single function:
 
@@ -22,12 +22,12 @@ res = BB84(n=100, s=10, seed=42, executor="aer")  # "aer" (local, default) or "r
 
 ### Return type (`BB84Result` dataclass)
 
-- `key_bits: List[int]` — the final `n` key bits (0/1 list)  
-- `qber_sample: float` — error rate measured on the `s` sampled, sifted bits  
-- `raw_transmissions: int` — number of qubits sent to accumulate enough sifted bits  
-- `sifted_size_before_sample: int` — count of sifted bits prior to sampling  
-- `sample_indices: List[int]` — which sifted positions were used for the integrity check  
-- `kept_indices: List[int]` — which sifted positions remain (from which the final `n` bits were taken)
+- `key_bits: List[int]` - the final `n` key bits (0/1 list)  
+- `qber_sample: float` - error rate measured on the `s` sampled, sifted bits  
+- `raw_transmissions: int` - number of qubits sent to accumulate enough sifted bits  
+- `sifted_size_before_sample: int` - count of sifted bits prior to sampling  
+- `sample_indices: List[int]` - which sifted positions were used for the integrity check  
+- `kept_indices: List[int]` - which sifted positions remain (from which the final `n` bits were taken)
 
 ---
 
@@ -103,7 +103,7 @@ res = BB84(
 print(res.qber_sample, len(res.key_bits))
 ```
 
-> The protocol pipeline (prepare → measure → run → sift → sample) is identical. Only the **executor** changes.
+> The protocol pipeline (prepare -> measure -> run -> sift -> sample) is identical. Only the **executor** changes.
 
 ---
 
