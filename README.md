@@ -1,9 +1,9 @@
-# BB84 with Qiskit — Local Aer + IBM Runtime (toggleable)
+# BB84 Protocol with Qiskit - Locally / IBM Runtime (toggleable)
 
-This repo provides a clean, beginner-friendly implementation of the **BB84 quantum key distribution** protocol using **Qiskit**.
+This repo provides implementation of the **BB84 quantum key distribution** protocol using Qiskit.
 
 - Run **offline** with the local **Aer** simulator.
-- Optionally run the **same code online** on IBM Quantum (hardware or eligible simulators) via **Qiskit Runtime** - just flip a flag.
+- Optionally run the same code **online** on IBM Quantum via **Qiskit Runtime** - by flipping a flag.
 
 ---
 
