@@ -33,6 +33,9 @@ res = BB84(n=100, s=10, seed=42, executor="aer")  # "aer" (local, default) or "r
 
 ## Quick start (local, no account required)
 
+### 0) Installations
+Before you start, make sure you have installed locally an updated versions of Python and Anaconda3.
+
 ### 1) Create a Python environment
 ```bash
 conda create -n qiskit-env python=3.11 -y
@@ -119,21 +122,6 @@ BB84(
   qber_threshold: float = 0.02     # integrity-check threshold (useful if you add noise)
 )
 ```
-
----
-
-## Troubleshooting (common)
-
-- **`AttributeError: get_counts` on per-experiment entries**  
-  Use `result.get_counts(i)` on the overall result object (not `res.results[i].get_counts()`).
-
-- **Online: `No matching instances found` when creating `QiskitRuntimeService()`**  
-  Re-save your account with explicit `instance="..."` and `region="us-east"`, then restart the kernel.
-
-- **No online simulators visible**  
-  Keep using Aer locally (or a fake backend). You can still target real hardware with `executor="runtime"`.
-
----
 
 ## License
 
