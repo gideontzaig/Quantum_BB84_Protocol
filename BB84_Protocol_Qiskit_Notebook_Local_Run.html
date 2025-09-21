@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>BB84_Protocol_Qiskit_Notebook</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>BB84_Protocol_Notebook</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7511,22 +7511,23 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c629c3e6">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=07e7e3ca">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="BB84-Protocol-on-Qiskit">BB84 Protocol on Qiskit<a class="anchor-link" href="#BB84-Protocol-on-Qiskit">¶</a></h1><p>This notebook implements BB84 and lets you choose <strong>at the top</strong> whether to run:</p>
+<h1 id="BB84-Protocol-Notebook">BB84 Protocol Notebook<a class="anchor-link" href="#BB84-Protocol-Notebook">¶</a></h1><p>This notebook implements BB84 and lets you choose <strong>at the top</strong> whether to run:</p>
 <ul>
 <li><strong>Local/offline</strong> with <code>AerSimulator</code> (default), or</li>
 <li><strong>Online</strong> with IBM <strong>Runtime</strong> Sampler (hardware or eligible simulators).</li>
 </ul>
-<p>Change the <code>EXECUTOR</code> variable below to <code>"aer"</code> or <code>"runtime"</code> and run the notebook.</p>
+<p>Change the <code>EXECUTOR</code> variable below to <code>"aer"</code> or <code>"runtime"</code> and run the notebook.
+Note that if you pick the Online executor: uncomment the account saving section and insert 'API key' and 'instance CRN or name' at their desired places.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=140d7d02">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=99e83323">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7536,23 +7537,23 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ==== EXECUTION TOGGLE ====</span>
 <span class="c1"># Choose "aer" for local offline simulation, or "runtime" for IBM Runtime online execution.</span>
-<span class="n">EXECUTOR</span> <span class="o">=</span> <span class="s2">"aer"</span>           <span class="c1"># "aer" (default) or "runtime"</span>
+<span class="n">EXECUTOR</span> <span class="o">=</span> <span class="s2">"runtime"</span>           <span class="c1"># "aer" (default) or "runtime"</span>
 <span class="n">RUNTIME_BACKEND_NAME</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Optional: set a specific backend string when EXECUTOR="runtime", else auto-pick</span>
 
 <span class="c1">## If using EXECUTOR="runtime", ensure you've saved your account first:</span>
-<span class="c1"># from qiskit_ibm_runtime import QiskitRuntimeService</span>
-<span class="c1"># QiskitRuntimeService.save_account(token="INSERT_API_KEY",</span>
-<span class="c1">#                                    channel="ibm_quantum_platform",</span>
-<span class="c1">#                                    instance="INSERT_INSTANCE_CRN_OR_NAME",</span>
-<span class="c1">#                                    region="us-east",</span>
-<span class="c1">#                                    set_as_default=True,</span>
-<span class="c1">#                                    overwrite=True)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime</span><span class="w"> </span><span class="kn">import</span> <span class="n">QiskitRuntimeService</span>
+<span class="n">QiskitRuntimeService</span><span class="o">.</span><span class="n">save_account</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"wgY8r3kShyPtycwS7Es0rHqsbtIPGfb8l6ioJ5YYbKLU"</span><span class="p">,</span>
+                                    <span class="n">channel</span><span class="o">=</span><span class="s2">"ibm_quantum_platform"</span><span class="p">,</span>
+                                    <span class="n">instance</span><span class="o">=</span><span class="s2">"crn:v1:bluemix:public:quantum-computing:us-east:a/a6d2b04ddc3c4e398b67bc6f53b0b133:4b75ed13-c213-4ce1-ba23-9716484d510a::"</span><span class="p">,</span>
+                                    <span class="n">region</span><span class="o">=</span><span class="s2">"us-east"</span><span class="p">,</span>
+                                    <span class="n">set_as_default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                    <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=84773a36">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=256d8eee">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7580,13 +7581,13 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Executor mode: aer
+<pre>Executor mode: runtime
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a14e6ad0">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=02e68a8a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7627,7 +7628,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2277f2c9">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=099ee2ca">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7650,7 +7651,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3e403564">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=04a318a9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7659,7 +7660,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># --- IBM Runtime (online) executor ---</span>
-<span class="c1"># Requires: qiskit-ibm-runtime installed and account saved with QiskitRuntimeService.save_account(...)</span>
+<span class="c1"># Requires: qiskit-ibm-runtime installed and account saved with QiskitRuntimeService.save_account()</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">pick_ibm_backend</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">backend_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">backend_name</span><span class="p">:</span>
@@ -7679,38 +7680,6 @@ a.anchor-link {
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">return</span> <span class="n">qpus</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="c1"># def run_single_shot_batch_runtime(circuits: List[QuantumCircuit], *, runtime_service=None, backend_name=None, shots=1):</span>
-<span class="c1">#     try:</span>
-<span class="c1">#         from qiskit_ibm_runtime import SamplerV2 as Sampler, Session, QiskitRuntimeService</span>
-<span class="c1">#         SAMPLER_KW = {"mode": None}</span>
-<span class="c1">#         SAMPLER_ARG = "mode"</span>
-<span class="c1">#     except Exception:</span>
-<span class="c1">#         from qiskit_ibm_runtime import Sampler, Session, QiskitRuntimeService</span>
-<span class="c1">#         SAMPLER_KW = {"session": None}</span>
-<span class="c1">#         SAMPLER_ARG = "session"</span>
-
-<span class="c1">#     service = runtime_service or QiskitRuntimeService()</span>
-<span class="c1">#     backend = pick_ibm_backend(service, backend_name=backend_name)</span>
-
-<span class="c1">#     with Session(backend=backend) as session:</span>
-<span class="c1">#         if SAMPLER_ARG == "mode":</span>
-<span class="c1">#             SAMPLER_KW["mode"] = session</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             SAMPLER_KW["session"] = session</span>
-<span class="c1">#         sampler = Sampler(**SAMPLER_KW)</span>
-<span class="c1">#         job = sampler.run(circuits, shots=shots)</span>
-<span class="c1">#         result = job.result()</span>
-
-<span class="c1">#     bits = []</span>
-<span class="c1">#     for i in range(len(circuits)):</span>
-<span class="c1">#         pub = result[i]</span>
-<span class="c1">#         try:</span>
-<span class="c1">#             counts = pub.data.meas.get_counts()</span>
-<span class="c1">#         except Exception:</span>
-<span class="c1">#             counts = pub.join_data().get_counts()</span>
-<span class="c1">#         bits.append(int(next(iter(counts))[-1]))</span>
-<span class="c1">#     return bits</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">run_single_shot_batch_runtime</span><span class="p">(</span><span class="n">circuits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">QuantumCircuit</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">runtime_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">backend_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="c1"># Prefer SamplerV2; fall back to legacy Sampler if needed.</span>
@@ -7758,7 +7727,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7128ca78">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f49e4b03">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7846,7 +7815,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=909215ba">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=03c940cc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7888,27 +7857,43 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Executor: aer
-Raw transmissions: 1024
-Sifted (before sampling): 515
-Sample QBER: 0.0
-First 32 key bits: 11110110000111001111111000001110 ...
-Key length: 100
+<pre>Using backend (job mode): ibm_torino
 </pre>
 </div>
 </div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e97015bb-6913-413d-99c2-008d976d9dd3">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[7]</span><span class="ansi-green-fg">, line 11</span>
+<span class="ansi-green-fg">      7</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">except</span> <span class="ansi-bold" style="color: rgb(215,95,95)">Exception</span> <span class="ansi-bold" style="color: rgb(0,135,0)">as</span> e:
+<span class="ansi-green-fg">      8</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> <span class="ansi-bold" style="color: rgb(215,95,95)">RuntimeError</span>(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">EXECUTOR is </span><span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">runtime</span><span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg"> but QiskitRuntimeService could not be initialized. </span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">      9</span>                            <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Make sure you installed qiskit-ibm-runtime and saved your account.</span><span class="ansi-yellow-fg">"</span>) <span class="ansi-bold" style="color: rgb(0,135,0)">from</span><span style="color: rgb(188,188,188)"> </span><span class="ansi-blue-intense-fg ansi-bold">e</span>
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">11</span> res = <span class="ansi-yellow-bg">BB84</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">n</span><span class="ansi-yellow-bg">=</span><span class="ansi-green-fg ansi-yellow-bg">100</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">s</span><span class="ansi-yellow-bg">=</span><span class="ansi-green-fg ansi-yellow-bg">10</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">seed</span><span class="ansi-yellow-bg">=</span><span class="ansi-green-fg ansi-yellow-bg">42</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">     12</span> <span class="ansi-yellow-bg">           </span><span class="ansi-yellow-bg">executor</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">EXECUTOR</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">     13</span> <span class="ansi-yellow-bg">           </span><span class="ansi-yellow-bg">runtime_service</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">runtime_service</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">     14</span> <span class="ansi-yellow-bg">           </span><span class="ansi-yellow-bg">backend_name</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">RUNTIME_BACKEND_NAME</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">     15</span> <span class="ansi-yellow-bg">           </span><span class="ansi-yellow-bg">batch_size</span><span class="ansi-yellow-bg">=</span><span class="ansi-green-fg ansi-yellow-bg">1024</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     17</span> <span style="color: rgb(0,135,0)">print</span>(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Executor:</span><span class="ansi-yellow-fg">"</span>, EXECUTOR)
+<span class="ansi-green-fg">     18</span> <span style="color: rgb(0,135,0)">print</span>(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Raw transmissions:</span><span class="ansi-yellow-fg">"</span>, res.raw_transmissions)
+
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[6]</span><span class="ansi-green-fg">, line 64</span>, in <span class="ansi-cyan-fg">BB84</span><span class="ansi-blue-fg">(n, s, seed, batch_size, executor, runtime_service, backend_name, qber_threshold)</span>
+<span class="ansi-green-fg">     62</span> a_sift_cat = np.concatenate(a_sift_all) <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> a_sift_all <span class="ansi-bold" style="color: rgb(0,135,0)">else</span> np.array([], dtype=np.int8)
+<span class="ansi-green-fg">     63</span> b_sift_cat = np.concatenate(b_sift_all) <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> b_sift_all <span class="ansi-bold" style="color: rgb(0,135,0)">else</span> np.array([], dtype=np.int8)
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">64</span> kept_bits, qber, sample_idx, kept_idx = <span class="ansi-yellow-bg">sample_and_verify</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">a_sift_cat</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">b_sift_cat</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">s</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">rng</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">qber_threshold</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">qber_threshold</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     65</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">len</span>(kept_bits) &lt; n:
+<span class="ansi-green-fg">     66</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> <span class="ansi-bold" style="color: rgb(215,95,95)">RuntimeError</span>(<span class="ansi-yellow-fg">f</span><span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">After sampling, not enough bits remain: have </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span><span style="color: rgb(0,135,0)">len</span>(kept_bits)<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span class="ansi-yellow-fg">, need </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>n<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span class="ansi-yellow-fg">"</span>)
+
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[6]</span><span class="ansi-green-fg">, line 30</span>, in <span class="ansi-cyan-fg">sample_and_verify</span><span class="ansi-blue-fg">(a_sift, b_sift, s, rng, qber_threshold)</span>
+<span class="ansi-green-fg">     28</span> kept_b = b_sift[mask]
+<span class="ansi-green-fg">     29</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> qber &gt; qber_threshold:
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">30</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> <span class="ansi-bold" style="color: rgb(215,95,95)">ValueError</span>(<span class="ansi-yellow-fg">f</span><span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">QBER too high in sample: </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>qber<span class="ansi-bold" style="color: rgb(175,95,135)">:</span><span class="ansi-yellow-fg">.3f</span><span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span class="ansi-yellow-fg"> &gt; </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>qber_threshold<span class="ansi-bold" style="color: rgb(175,95,135)">:</span><span class="ansi-yellow-fg">.3f</span><span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span class="ansi-yellow-fg">"</span>)
+<span class="ansi-green-fg">     31</span> kept_indices = np.nonzero(mask)[<span class="ansi-green-fg">0</span>].tolist()
+<span class="ansi-green-fg">     32</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> kept_b.astype(<span style="color: rgb(0,135,0)">int</span>).tolist(), qber, sample_idx.tolist(), kept_indices
+
+<span class="ansi-red-fg">ValueError</span>: QBER too high in sample: 0.100 &gt; 0.020</pre>
 </div>
 </div>
 </div>
